@@ -1,0 +1,107 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Array {
+    int size;
+    int *array;
+};
+
+struct Array createArray(int size) {
+    struct Array arr;
+    arr.size = size;
+    arr.array = (int*)malloc(size * sizeof(int));
+    for (int i = 0; i < size; i++) {
+        arr.array[i] = 0; // Initialize array elements to 0
+    }
+    return arr;
+}
+
+void traverse(struct Array arr) {
+    for (int i = 0; i < arr.size; i++) {
+        printf("%d ", arr.array[i]);
+    }
+    printf("\n");
+}
+
+void insert(struct Array *arr, int index, int value) {
+    if (index < 0 || index >= arr->size) {
+        printf("Index out of bounds\n");
+        return;
+    }
+    arr->array[index] = value;
+}
+
+void delete(struct Array *arr, int index) {
+    if (index < 0 || index >= arr->size) {
+        printf("Index out of bounds\n");
+        return;
+    }
+    arr->array[index] = 0; // Reset value to 0
+}
+
+void update(struct Array *arr, int index, int value) {
+    if (index < 0 || index >= arr->size) {
+        printf("Index out of bounds\n");
+        return;
+    }
+    arr->array[index] = value;
+}
+
+void bubble_sort(struct Array *arr) {
+    for (int i = 0; i < arr->size; i++) {
+        for (int j = 0; j < arr->size - i - 1; j++) {
+            if (arr->array[j] > arr->array[j + 1]) {
+                // Swap elements
+                int temp = arr->array[j];
+                arr->array[j] = arr->array[j + 1];
+                arr->array[j + 1] = temp;
+            }
+        }
+    }
+}
+
+int main() {
+    int size;
+    printf("Enter the size of the array: ");
+    scanf("%d", &size);
+
+    struct Array arr = createArray(size);
+
+    while (1) {
+        printf("\n1. Insert element\n");
+        printf("2. Remove element\n");
+        printf("3. View array\n");
+        printf("4. Exit\n");
+
+        int choice;
+        printf("\nEnter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                int index, value;
+                printf("Enter the index to insert: ");
+                scanf("%d", &index);
+                printf("Enter the value to insert: ");
+                scanf("%d", &value);
+                insert(&arr, index, value);
+                break;
+            case 2:
+                printf("Enter the index to remove: ");
+                scanf("%d", &index);
+                delete(&arr, index);
+                break;
+            case 3:
+                printf("Current Array: ");
+                traverse(arr);
+                break;
+            case 4:
+                free(arr.array); // Free dynamically allocated memory
+                return 0;
+            default:
+                printf("Invalid choice. Please try again.\n");
+        }
+    }
+
+    return 0;
+}
